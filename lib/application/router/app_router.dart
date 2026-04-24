@@ -31,9 +31,8 @@ class AppRouter {
             GoRoute(
               path: AppRoutePaths.episodes,
               name: AppRouteNames.episodes,
-              builder: (BuildContext context, GoRouterState state) {
-                return const EpisodeListPage();
-              },
+              builder: (BuildContext context, GoRouterState state) =>
+                  const EpisodeListPage(),
               routes: <RouteBase>[
                 GoRoute(
                   path: ':${AppRouteParameters.episodeId}',
