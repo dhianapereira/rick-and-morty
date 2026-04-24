@@ -6,6 +6,7 @@ import 'package:rickandmorty/features/episodes/domain/entities/episode.dart';
 import 'package:rickandmorty/features/episodes/presentation/controllers/episode_list_controller.dart';
 import 'package:rickandmorty/features/episodes/presentation/controllers/episode_list_state.dart';
 import 'package:rickandmorty/shared/shared.dart';
+import 'package:rickandmorty/l10n/l10n_extension.dart';
 
 class EpisodeListPage extends StatefulWidget {
   const EpisodeListPage({super.key});
@@ -69,6 +70,7 @@ class _EpisodeListHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -88,12 +90,16 @@ class _EpisodeListHeader extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Episode Guide', style: theme.textTheme.headlineMedium),
+            Text(l10n.episodesTitle, style: theme.textTheme.headlineMedium),
             const SizedBox(height: AppSpacing.xs),
             Text(
               state.hasContent
-                  ? 'Showing ${state.startEpisodeNumber}-${state.endEpisodeNumber} of ${state.totalEpisodes}'
-                  : 'Explore the journey from the first episode to the latest release.',
+                  ? l10n.episodesRangeDescription(
+                      state.startEpisodeNumber,
+                      state.endEpisodeNumber,
+                      state.totalEpisodes,
+                    )
+                  : l10n.episodesInitialDescription,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.onSurfaceVariant,
               ),
@@ -204,6 +210,7 @@ class _EpisodeErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Center(
       child: ConstrainedBox(
@@ -221,7 +228,7 @@ class _EpisodeErrorState extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Text(
-                  'Unable to load episodes',
+                  l10n.unableToLoadEpisodesTitle,
                   style: theme.textTheme.titleLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -236,7 +243,7 @@ class _EpisodeErrorState extends StatelessWidget {
                 const SizedBox(height: AppSpacing.lg),
                 FilledButton(
                   onPressed: onRetry,
-                  child: const Text('Try again'),
+                  child: Text(l10n.tryAgainLabel),
                 ),
               ],
             ),
@@ -261,6 +268,7 @@ class _EpisodePaginationControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Row(
       children: <Widget>[
@@ -270,14 +278,14 @@ class _EpisodePaginationControls extends StatelessWidget {
                 ? onPreviousPage
                 : null,
             icon: const Icon(Icons.arrow_back_rounded),
-            label: const Text('Previous'),
+            label: Text(l10n.previousPageLabel),
           ),
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Center(
             child: Text(
-              'Page ${state.currentPage} of ${state.totalPages}',
+              l10n.pageIndicatorLabel(state.currentPage, state.totalPages),
               style: theme.textTheme.labelLarge?.copyWith(
                 color: AppColors.onSurfaceVariant,
               ),
@@ -291,7 +299,7 @@ class _EpisodePaginationControls extends StatelessWidget {
                 ? onNextPage
                 : null,
             icon: const Icon(Icons.arrow_forward_rounded),
-            label: const Text('Next'),
+            label: Text(l10n.nextPageLabel),
           ),
         ),
       ],

@@ -1,0 +1,44 @@
+{
+  "@@locale": "en",
+  "appName": "Rick and Morty",
+  "episodesTitle": "Episode Guide",
+  "episodesInitialDescription": "Explore the journey from the first episode to the latest release.",
+  "episodesRangeDescription": "Showing {startEpisodeNumber}-{endEpisodeNumber} of {totalEpisodes}",
+  "@episodesRangeDescription": {
+    "placeholders": {
+      "startEpisodeNumber": {
+        "type": "int"
+      },
+      "endEpisodeNumber": {
+        "type": "int"
+      },
+      "totalEpisodes": {
+        "type": "int"
+      }
+    }
+  },
+  "unableToLoadEpisodesTitle": "Unable to load episodes",
+  "tryAgainLabel": "Try again",
+  "previousPageLabel": "Previous",
+  "nextPageLabel": "Next",
+  "pageIndicatorLabel": "Page {currentPage} of {totalPages}",
+  "@pageIndicatorLabel": {
+    "placeholders": {
+      "currentPage": {
+        "type": "int"
+      },
+      "totalPages": {
+        "type": "int"
+      }
+    }
+  },
+  "episodeTitle": "Episode {episodeId}",
+  "@episodeTitle": {
+    "placeholders": {
+      "episodeId": {
+        "type": "int"
+      }
+    }
+  },
+  "charactersTitle": "Characters"
+}
