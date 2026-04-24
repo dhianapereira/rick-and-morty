@@ -59,5 +59,8 @@ jobs:
       - name: Prepare CI environment
         uses: ./.github/actions/setup-flutter
 
+      - name: Install Very Good CLI
+        run: dart pub global activate very_good_cli 1.1.1
+
       - name: Run tests
-        run: flutter test --reporter expanded
+        run: very_good test --test-randomize-ordering-seed random

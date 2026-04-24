@@ -33,6 +33,13 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Ignore platform-specific goldens
+**/goldens/macos
+**/goldens/linux
+**/goldens/windows
+
+**/failures/
+
 # Symbolication related
 app.*.symbols
 

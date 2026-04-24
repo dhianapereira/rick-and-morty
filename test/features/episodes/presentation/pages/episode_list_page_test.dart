@@ -126,6 +126,7 @@ Widget _buildTestApp() {
   );
 
   return MaterialApp.router(
+    debugShowCheckedModeBanner: false,
     theme: AppTheme.light,
     routerConfig: router,
     localizationsDelegates: AppLocalizations.localizationsDelegates,
