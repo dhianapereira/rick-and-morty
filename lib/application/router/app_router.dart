@@ -4,6 +4,7 @@ import 'package:rickandmorty/application/router/app_route_location.dart';
 import 'package:rickandmorty/application/router/app_route_names.dart';
 import 'package:rickandmorty/application/router/app_route_parameters.dart';
 import 'package:rickandmorty/application/router/app_route_paths.dart';
+import 'package:rickandmorty/features/characters/presentation/pages/details/character_details_page.dart';
 import 'package:rickandmorty/features/episodes/presentation/pages/details/episode_details_page.dart';
 import 'package:rickandmorty/features/episodes/presentation/pages/episode_list_page.dart';
 import 'package:rickandmorty/features/home/presentation/pages/home_page.dart';
@@ -33,20 +34,28 @@ class AppRouter {
               name: AppRouteNames.episodes,
               builder: (BuildContext context, GoRouterState state) =>
                   const EpisodeListPage(),
-              routes: <RouteBase>[
-                GoRoute(
-                  path: ':${AppRouteParameters.episodeId}',
-                  name: AppRouteNames.episodeDetails,
-                  builder: (BuildContext context, GoRouterState state) {
-                    final String episodeId =
-                        state.pathParameters[AppRouteParameters.episodeId]!;
-
-                    return EpisodeDetailsPage(episodeId: int.parse(episodeId));
-                  },
-                ),
-              ],
             ),
           ],
+        ),
+        GoRoute(
+          path: AppRoutePaths.episodeDetails,
+          name: AppRouteNames.episodeDetails,
+          builder: (BuildContext context, GoRouterState state) {
+            final String episodeId =
+                state.pathParameters[AppRouteParameters.episodeId]!;
+
+            return EpisodeDetailsPage(episodeId: int.parse(episodeId));
+          },
+        ),
+        GoRoute(
+          path: AppRoutePaths.characterDetails,
+          name: AppRouteNames.characterDetails,
+          builder: (BuildContext context, GoRouterState state) {
+            final String characterId =
+                state.pathParameters[AppRouteParameters.characterId]!;
+
+            return CharacterDetailsPage(characterId: int.parse(characterId));
+          },
         ),
       ],
       debugLogDiagnostics: false,
@@ -55,5 +64,9 @@ class AppRouter {
 
   static String episodeDetailsLocation(int episodeId) {
     return AppRouteLocation.episodeDetails(episodeId);
+  }
+
+  static String characterDetailsLocation(int characterId) {
+    return AppRouteLocation.characterDetails(characterId);
   }
 }

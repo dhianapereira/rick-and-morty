@@ -62,5 +62,40 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String episodeDetailsDescription(int charactersCount) {
+    return '$charactersCount characters confirmed in this episode.';
+  }
+
+  @override
+  String get episodeCodeLabel => 'Episode code';
+
+  @override
+  String get episodeAirDateLabel => 'Air date';
+
+  @override
+  String get episodeCreatedAtLabel => 'Created at';
+
+  @override
+  String get episodeCharactersCountLabel => 'Characters';
+
+  @override
+  String episodeCharactersCountValue(int count) {
+    return '$count total';
+  }
+
+  @override
+  String get unableToLoadEpisodeDetailsTitle =>
+      'Unable to load episode details';
+
+  @override
   String get charactersTitle => 'Characters';
+
+  @override
+  String characterDetailsTitle(int characterId) {
+    return 'Character $characterId';
+  }
+
+  @override
+  String get characterDetailsPlaceholder =>
+      'Character details will be added soon.';
 }

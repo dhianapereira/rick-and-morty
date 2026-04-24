@@ -171,7 +171,7 @@ class _EpisodeListItem extends StatelessWidget {
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-        onTap: () => context.go(AppRouter.episodeDetailsLocation(episode.id)),
+        onTap: () => context.push(AppRouter.episodeDetailsLocation(episode.id)),
         child: Padding(
           padding: AppSpacing.cardPadding,
           child: Column(

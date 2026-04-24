@@ -21,8 +21,11 @@ void main() {
     () {
       expect(AppRouteNames.episodes, 'episodes');
       expect(AppRouteNames.episodeDetails, 'episode-details');
+      expect(AppRouteNames.characterDetails, 'character-details');
       expect(AppRouteParameters.episodeId, 'episodeId');
+      expect(AppRouteParameters.characterId, 'characterId');
       expect(AppRoutePaths.episodeDetails, '/episodes/:episodeId');
+      expect(AppRoutePaths.characterDetails, '/characters/:characterId');
     },
   );
 }
