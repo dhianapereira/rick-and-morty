@@ -182,11 +182,65 @@ abstract class AppLocalizations {
   /// **'Episode {episodeId}'**
   String episodeTitle(int episodeId);
 
+  /// No description provided for @episodeDetailsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'{charactersCount} characters confirmed in this episode.'**
+  String episodeDetailsDescription(int charactersCount);
+
+  /// No description provided for @episodeCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Episode code'**
+  String get episodeCodeLabel;
+
+  /// No description provided for @episodeAirDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Air date'**
+  String get episodeAirDateLabel;
+
+  /// No description provided for @episodeCreatedAtLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get episodeCreatedAtLabel;
+
+  /// No description provided for @episodeCharactersCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Characters'**
+  String get episodeCharactersCountLabel;
+
+  /// No description provided for @episodeCharactersCountValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} total'**
+  String episodeCharactersCountValue(int count);
+
+  /// No description provided for @unableToLoadEpisodeDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load episode details'**
+  String get unableToLoadEpisodeDetailsTitle;
+
   /// No description provided for @charactersTitle.
   ///
   /// In en, this message translates to:
   /// **'Characters'**
   String get charactersTitle;
+
+  /// No description provided for @characterDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Character {characterId}'**
+  String characterDetailsTitle(int characterId);
+
+  /// No description provided for @characterDetailsPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Character details will be added soon.'**
+  String get characterDetailsPlaceholder;
 }
 
 class _AppLocalizationsDelegate

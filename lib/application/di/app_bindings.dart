@@ -5,10 +5,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:rickandmorty/application/config/app_environment.dart';
 import 'package:rickandmorty/application/theme/theme_controller.dart';
 import 'package:rickandmorty/application/theme/theme_local_data_source.dart';
+import 'package:rickandmorty/features/characters/data/datasources/character_remote_data_source.dart';
+import 'package:rickandmorty/features/episodes/data/datasources/episode_details_remote_data_source.dart';
 import 'package:rickandmorty/features/episodes/data/datasources/episode_local_data_source.dart';
 import 'package:rickandmorty/features/episodes/data/datasources/episode_remote_data_source.dart';
+import 'package:rickandmorty/features/episodes/data/repositories/rick_and_morty_episode_details_repository.dart';
 import 'package:rickandmorty/features/episodes/data/repositories/rick_and_morty_episode_repository.dart';
+import 'package:rickandmorty/features/episodes/domain/repositories/episode_details_repository.dart';
 import 'package:rickandmorty/features/episodes/domain/repositories/episode_repository.dart';
+import 'package:rickandmorty/features/episodes/presentation/controllers/episode_details_controller.dart';
 import 'package:rickandmorty/features/episodes/presentation/controllers/episode_list_controller.dart';
 import 'package:rickandmorty/shared/http/client_http.dart';
 import 'package:sembast/sembast_io.dart';
@@ -51,14 +56,33 @@ class AppBindings {
         clientHttp: GetIt.I<ClientHttp>(),
       ),
     );
+    GetIt.I.registerLazySingleton<EpisodeDetailsRemoteDataSource>(
+      () =>
+          ApiEpisodeDetailsRemoteDataSource(clientHttp: GetIt.I<ClientHttp>()),
+    );
+    GetIt.I.registerLazySingleton<CharacterRemoteDataSource>(
+      () => ApiCharacterRemoteDataSource(clientHttp: GetIt.I<ClientHttp>()),
+    );
     GetIt.I.registerLazySingleton<EpisodeRepository>(
       () => RickAndMortyEpisodeRepository(
         localDataSource: GetIt.I<EpisodeLocalDataSource>(),
         remoteDataSource: GetIt.I<EpisodeRemoteDataSource>(),
       ),
     );
+    GetIt.I.registerLazySingleton<EpisodeDetailsRepository>(
+      () => EpisodeDetailsRepositoryImpl(
+        remoteDataSource: GetIt.I<EpisodeDetailsRemoteDataSource>(),
+        characterRemoteDataSource: GetIt.I<CharacterRemoteDataSource>(),
+      ),
+    );
     GetIt.I.registerFactory<EpisodeListController>(
       () => EpisodeListController(repository: GetIt.I<EpisodeRepository>()),
+    );
+    GetIt.I.registerFactoryParam<EpisodeDetailsController, int, void>(
+      (int episodeId, _) => EpisodeDetailsController(
+        repository: GetIt.I<EpisodeDetailsRepository>(),
+        episodeId: episodeId,
+      ),
     );
     GetIt.I.registerSingleton<ThemeController>(
       ThemeController(localDataSource: GetIt.I<ThemeLocalDataSource>()),

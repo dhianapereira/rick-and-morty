@@ -44,5 +44,35 @@
       }
     }
   },
-  "charactersTitle": "Characters"
+  "episodeDetailsDescription": "{charactersCount} characters confirmed in this episode.",
+  "@episodeDetailsDescription": {
+    "placeholders": {
+      "charactersCount": {
+        "type": "int"
+      }
+    }
+  },
+  "episodeCodeLabel": "Episode code",
+  "episodeAirDateLabel": "Air date",
+  "episodeCreatedAtLabel": "Created at",
+  "episodeCharactersCountLabel": "Characters",
+  "episodeCharactersCountValue": "{count} total",
+  "@episodeCharactersCountValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unableToLoadEpisodeDetailsTitle": "Unable to load episode details",
+  "charactersTitle": "Characters",
+  "characterDetailsTitle": "Character {characterId}",
+  "@characterDetailsTitle": {
+    "placeholders": {
+      "characterId": {
+        "type": "int"
+      }
+    }
+  },
+  "characterDetailsPlaceholder": "Character details will be added soon."
 }

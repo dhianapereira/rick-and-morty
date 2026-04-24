@@ -3,6 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:rickandmorty/features/characters/domain/entities/character.dart';
+import 'package:rickandmorty/features/episodes/domain/entities/episode_details.dart';
+import 'package:rickandmorty/features/episodes/presentation/controllers/episode_details_controller.dart';
+import 'package:rickandmorty/features/episodes/presentation/controllers/episode_details_state.dart';
 import 'package:rickandmorty/application/router/app_router.dart';
 import 'package:rickandmorty/application/theme/app_theme_preference.dart';
 import 'package:rickandmorty/application/theme/theme_controller.dart';
@@ -15,16 +19,22 @@ import 'package:rickandmorty/shared/shared.dart';
 class _MockEpisodeListController extends Mock
     implements EpisodeListController {}
 
+class _MockEpisodeDetailsController extends Mock
+    implements EpisodeDetailsController {}
+
 class _MockThemeController extends Mock implements ThemeController {}
 
 void main() {
   late EpisodeListController controller;
   late ValueNotifier<EpisodeListState> stateNotifier;
+  late EpisodeDetailsController detailsController;
+  late ValueNotifier<EpisodeDetailsState> detailsNotifier;
   late ThemeController themeController;
   late ValueNotifier<AppThemePreference> themeNotifier;
 
   setUp(() {
     controller = _MockEpisodeListController();
+    detailsController = _MockEpisodeDetailsController();
     themeController = _MockThemeController();
     stateNotifier = ValueNotifier<EpisodeListState>(
       EpisodeListState(
@@ -41,6 +51,27 @@ void main() {
     );
     themeNotifier = ValueNotifier<AppThemePreference>(
       AppThemePreference.system,
+    );
+    detailsNotifier = ValueNotifier<EpisodeDetailsState>(
+      EpisodeDetailsState(
+        details: EpisodeDetails(
+          id: 9,
+          name: 'Something Ricked This Way Comes',
+          code: 'S01E09',
+          airDate: 'March 24, 2014',
+          createdAt: DateTime.utc(2017, 11, 10),
+          characters: const <Character>[
+            Character(
+              id: 1,
+              name: 'Rick Sanchez',
+              status: 'Alive',
+              species: 'Human',
+              imageUrl:
+                  'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+            ),
+          ],
+        ),
+      ),
     );
 
     when(() => controller.value).thenAnswer((_) => stateNotifier.value);
@@ -60,6 +91,26 @@ void main() {
     });
     when(() => controller.loadInitialPage()).thenAnswer((_) async {});
     when(() => controller.dispose()).thenAnswer((_) {});
+    when(
+      () => detailsController.value,
+    ).thenAnswer((_) => detailsNotifier.value);
+    when(() => detailsController.addListener(any())).thenAnswer((
+      Invocation invocation,
+    ) {
+      detailsNotifier.addListener(
+        invocation.positionalArguments.first as VoidCallback,
+      );
+    });
+    when(() => detailsController.removeListener(any())).thenAnswer((
+      Invocation invocation,
+    ) {
+      detailsNotifier.removeListener(
+        invocation.positionalArguments.first as VoidCallback,
+      );
+    });
+    when(() => detailsController.load()).thenAnswer((_) async {});
+    when(() => detailsController.retry()).thenAnswer((_) async {});
+    when(() => detailsController.dispose()).thenAnswer((_) {});
     when(() => themeController.value).thenAnswer((_) => themeNotifier.value);
     when(() => themeController.addListener(any())).thenAnswer((
       Invocation invocation,
@@ -86,11 +137,15 @@ void main() {
     ).thenAnswer((_) async {});
 
     GetIt.I.registerSingleton<EpisodeListController>(controller);
+    GetIt.I.registerFactoryParam<EpisodeDetailsController, int, void>(
+      (int unusedEpisodeId, void _) => detailsController,
+    );
     GetIt.I.registerSingleton<ThemeController>(themeController);
   });
 
   tearDown(() async {
     stateNotifier.dispose();
+    detailsNotifier.dispose();
     themeNotifier.dispose();
     await GetIt.I.reset();
   });
@@ -136,8 +191,34 @@ void main() {
       router.go(AppRouter.episodeDetailsLocation(9));
       await tester.pumpAndSettle();
 
+      expect(find.text('Something Ricked This Way Comes'), findsOneWidget);
       expect(find.text('Episode 9'), findsOneWidget);
-      expect(find.text('Characters'), findsOneWidget);
+      expect(find.text('Characters'), findsNWidgets(2));
+    },
+  );
+
+  testWidgets(
+    'Should show back button when episode details page is opened by push',
+    (WidgetTester tester) async {
+      final GoRouter router = AppRouter.createRouter(
+        navigatorKey: GlobalKey<NavigatorState>(),
+      );
+
+      await tester.pumpWidget(
+        MaterialApp.router(
+          theme: AppTheme.light,
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Pilot'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Episode 1'), findsOneWidget);
+      expect(find.byTooltip('Back'), findsOneWidget);
     },
   );
 }

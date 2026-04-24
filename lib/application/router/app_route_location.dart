@@ -6,4 +6,8 @@ class AppRouteLocation {
   static String episodeDetails(int episodeId) {
     return '${AppRoutePaths.episodes}/$episodeId';
   }
+
+  static String characterDetails(int characterId) {
+    return '/characters/$characterId';
+  }
 }
