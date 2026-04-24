@@ -7,6 +7,7 @@ class EpisodeListState {
     this.currentPage = 1,
     this.totalPages = 1,
     this.totalEpisodes = 0,
+    this.searchQuery = '',
     this.errorMessage,
   });
 
@@ -15,10 +16,13 @@ class EpisodeListState {
   final int currentPage;
   final int totalPages;
   final int totalEpisodes;
+  final String searchQuery;
   final String? errorMessage;
 
   bool get hasContent => episodes.isNotEmpty;
   bool get hasError => errorMessage != null;
+  bool get isSearchActive => searchQuery.isNotEmpty;
+  bool get isEmptySearchResult => isSearchActive && !isLoading && !hasContent;
   bool get hasPreviousPage => currentPage > 1;
   bool get hasNextPage => currentPage < totalPages;
   int get startEpisodeNumber => ((currentPage - 1) * 10) + 1;
@@ -30,6 +34,7 @@ class EpisodeListState {
     int? currentPage,
     int? totalPages,
     int? totalEpisodes,
+    String? searchQuery,
     Object? errorMessage = _noValue,
   }) {
     return EpisodeListState(
@@ -38,6 +43,7 @@ class EpisodeListState {
       currentPage: currentPage ?? this.currentPage,
       totalPages: totalPages ?? this.totalPages,
       totalEpisodes: totalEpisodes ?? this.totalEpisodes,
+      searchQuery: searchQuery ?? this.searchQuery,
       errorMessage: errorMessage == _noValue
           ? this.errorMessage
           : errorMessage as String?,

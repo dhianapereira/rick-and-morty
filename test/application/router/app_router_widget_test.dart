@@ -126,6 +126,7 @@ void main() {
       );
     });
     when(() => controller.loadInitialPage()).thenAnswer((_) async {});
+    when(() => controller.updateSearchQuery(any())).thenReturn(null);
     when(() => controller.dispose()).thenAnswer((_) {});
     when(
       () => detailsController.value,

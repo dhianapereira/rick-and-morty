@@ -19,6 +19,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'Explore the journey from the first episode to the latest release.';
 
   @override
+  String get episodesSearchHint => 'Search by episode name or code';
+
+  @override
+  String get clearSearchLabel => 'Clear search';
+
+  @override
+  String episodesSearchDescription(int totalEpisodes) {
+    return '$totalEpisodes matches found';
+  }
+
+  @override
   String episodesRangeDescription(
     int startEpisodeNumber,
     int endEpisodeNumber,
@@ -29,6 +40,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unableToLoadEpisodesTitle => 'Unable to load episodes';
+
+  @override
+  String get episodesSearchEmptyTitle => 'No episodes found';
+
+  @override
+  String get episodesSearchEmptyDescription =>
+      'Try a different episode name or code.';
 
   @override
   String get tryAgainLabel => 'Try again';
@@ -123,7 +141,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get characterStatusLabel => 'Status';
-
-  @override
-  String get characterEpisodesTitle => 'Episodes featured in';
 }

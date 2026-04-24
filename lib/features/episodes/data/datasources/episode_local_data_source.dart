@@ -4,6 +4,7 @@ import 'package:sembast/sembast.dart';
 
 abstract interface class EpisodeLocalDataSource {
   Future<EpisodePage?> fetchPage(int page);
+  Future<List<EpisodePage>> fetchAllPages();
   Future<void> savePage(EpisodePage episodePage);
 }
 
@@ -27,6 +28,19 @@ class SembastEpisodeLocalDataSource implements EpisodeLocalDataSource {
     }
 
     return EpisodePageCacheModel.fromMap(cachedPage).toEntity();
+  }
+
+  @override
+  Future<List<EpisodePage>> fetchAllPages() async {
+    final List<RecordSnapshot<int, Map<String, Object?>>> records = await _store
+        .find(_database);
+
+    return records
+        .map(
+          (RecordSnapshot<int, Map<String, Object?>> record) =>
+              EpisodePageCacheModel.fromMap(record.value).toEntity(),
+        )
+        .toList(growable: false);
   }
 
   @override
