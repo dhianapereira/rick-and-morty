@@ -8,8 +8,8 @@ abstract interface class EpisodeRemoteDataSource {
   Future<EpisodeApiPageModel> fetchPage(int page);
 }
 
-class RickAndMortyEpisodeRemoteDataSource implements EpisodeRemoteDataSource {
-  RickAndMortyEpisodeRemoteDataSource({required ClientHttp clientHttp})
+class ApiEpisodeRemoteDataSource implements EpisodeRemoteDataSource {
+  ApiEpisodeRemoteDataSource({required ClientHttp clientHttp})
     : _clientHttp = clientHttp;
 
   final ClientHttp _clientHttp;
