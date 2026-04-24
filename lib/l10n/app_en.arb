@@ -74,5 +74,14 @@
       }
     }
   },
-  "characterDetailsPlaceholder": "Character details will be added soon."
+  "characterDetailsPlaceholder": "Character details will be added soon.",
+  "unableToLoadCharacterDetailsTitle": "Unable to load character details",
+  "characterPlacesTitle": "Places",
+  "characterOriginLabel": "Origin",
+  "characterLocationLabel": "Last known location",
+  "characterGenderLabel": "Gender",
+  "characterEpisodesLabel": "Episodes",
+  "characterCreatedAtLabel": "Created at",
+  "characterStatusLabel": "Status",
+  "characterEpisodesTitle": "Episodes featured in"
 }

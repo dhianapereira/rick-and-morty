@@ -5,6 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rickandmorty/application/router/app_router.dart';
 import 'package:rickandmorty/features/characters/domain/entities/character.dart';
+import 'package:rickandmorty/features/characters/domain/entities/character_details.dart';
+import 'package:rickandmorty/features/characters/domain/entities/character_place.dart';
+import 'package:rickandmorty/features/characters/presentation/controllers/character_details_controller.dart';
+import 'package:rickandmorty/features/characters/presentation/controllers/character_details_state.dart';
 import 'package:rickandmorty/features/characters/presentation/pages/details/character_details_page.dart';
 import 'package:rickandmorty/features/characters/presentation/widgets/character_list_item.dart';
 import 'package:rickandmorty/features/episodes/domain/entities/episode_details.dart';
@@ -17,14 +21,23 @@ import 'package:rickandmorty/shared/shared.dart';
 class _MockEpisodeDetailsController extends Mock
     implements EpisodeDetailsController {}
 
+class _MockCharacterDetailsController extends Mock
+    implements CharacterDetailsController {}
+
 void main() {
   late EpisodeDetailsController controller;
   late ValueNotifier<EpisodeDetailsState> stateNotifier;
+  late CharacterDetailsController characterController;
+  late ValueNotifier<CharacterDetailsState> characterStateNotifier;
 
   setUp(() {
     controller = _MockEpisodeDetailsController();
+    characterController = _MockCharacterDetailsController();
     stateNotifier = ValueNotifier<EpisodeDetailsState>(
       EpisodeDetailsState(details: _details()),
+    );
+    characterStateNotifier = ValueNotifier<CharacterDetailsState>(
+      CharacterDetailsState(details: _characterDetails()),
     );
 
     when(() => controller.value).thenAnswer((_) => stateNotifier.value);
@@ -45,14 +58,38 @@ void main() {
     when(() => controller.load()).thenAnswer((_) async {});
     when(() => controller.retry()).thenAnswer((_) async {});
     when(() => controller.dispose()).thenAnswer((_) {});
+    when(
+      () => characterController.value,
+    ).thenAnswer((_) => characterStateNotifier.value);
+    when(() => characterController.addListener(any())).thenAnswer((
+      Invocation invocation,
+    ) {
+      characterStateNotifier.addListener(
+        invocation.positionalArguments.first as VoidCallback,
+      );
+    });
+    when(() => characterController.removeListener(any())).thenAnswer((
+      Invocation invocation,
+    ) {
+      characterStateNotifier.removeListener(
+        invocation.positionalArguments.first as VoidCallback,
+      );
+    });
+    when(() => characterController.load()).thenAnswer((_) async {});
+    when(() => characterController.retry()).thenAnswer((_) async {});
+    when(() => characterController.dispose()).thenAnswer((_) {});
 
     GetIt.I.registerFactoryParam<EpisodeDetailsController, int, void>(
       (int unusedEpisodeId, void _) => controller,
+    );
+    GetIt.I.registerFactoryParam<CharacterDetailsController, int, void>(
+      (int unusedCharacterId, void _) => characterController,
     );
   });
 
   tearDown(() async {
     stateNotifier.dispose();
+    characterStateNotifier.dispose();
     await GetIt.I.reset();
   });
 
@@ -88,7 +125,7 @@ void main() {
       await tester.tap(find.byType(CharacterListItem).first);
       await tester.pumpAndSettle();
 
-      expect(find.text('Character 1'), findsOneWidget);
+      expect(find.text('Rick Sanchez'), findsNWidgets(2));
     },
   );
 }
@@ -148,5 +185,28 @@ EpisodeDetails _details() {
         imageUrl: 'https://rickandmortyapi.com/api/character/avatar/2.jpeg',
       ),
     ],
+  );
+}
+
+CharacterDetails _characterDetails() {
+  return CharacterDetails(
+    id: 1,
+    name: 'Rick Sanchez',
+    status: 'Alive',
+    species: 'Human',
+    type: '',
+    gender: 'Male',
+    origin: const CharacterPlace(
+      name: 'Earth (C-137)',
+      url: 'https://rickandmortyapi.com/api/location/1',
+    ),
+    location: const CharacterPlace(
+      name: 'Citadel of Ricks',
+      url: 'https://rickandmortyapi.com/api/location/3',
+    ),
+    imageUrl: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+    episodeUrls: const <String>['https://rickandmortyapi.com/api/episode/1'],
+    url: 'https://rickandmortyapi.com/api/character/1',
+    createdAt: DateTime.utc(2017, 11, 4),
   );
 }

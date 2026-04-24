@@ -98,4 +98,32 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get characterDetailsPlaceholder =>
       'Character details will be added soon.';
+
+  @override
+  String get unableToLoadCharacterDetailsTitle =>
+      'Unable to load character details';
+
+  @override
+  String get characterPlacesTitle => 'Places';
+
+  @override
+  String get characterOriginLabel => 'Origin';
+
+  @override
+  String get characterLocationLabel => 'Last known location';
+
+  @override
+  String get characterGenderLabel => 'Gender';
+
+  @override
+  String get characterEpisodesLabel => 'Episodes';
+
+  @override
+  String get characterCreatedAtLabel => 'Created at';
+
+  @override
+  String get characterStatusLabel => 'Status';
+
+  @override
+  String get characterEpisodesTitle => 'Episodes featured in';
 }
