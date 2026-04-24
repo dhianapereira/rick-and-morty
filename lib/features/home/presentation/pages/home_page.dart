@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/l10n/l10n_extension.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({required this.child, super.key});
@@ -8,7 +9,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Rick and Morty')),
+      appBar: AppBar(title: Text(context.l10n.appName)),
       body: child,
     );
   }

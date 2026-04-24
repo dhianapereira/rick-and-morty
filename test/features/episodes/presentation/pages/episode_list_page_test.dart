@@ -7,6 +7,7 @@ import 'package:rickandmorty/features/episodes/domain/entities/episode.dart';
 import 'package:rickandmorty/features/episodes/presentation/controllers/episode_list_controller.dart';
 import 'package:rickandmorty/features/episodes/presentation/controllers/episode_list_state.dart';
 import 'package:rickandmorty/features/episodes/presentation/pages/episode_list_page.dart';
+import 'package:rickandmorty/l10n/generated/app_localizations.dart';
 import 'package:rickandmorty/shared/shared.dart';
 
 class _MockEpisodeListController extends Mock
@@ -124,7 +125,12 @@ Widget _buildTestApp() {
     ],
   );
 
-  return MaterialApp.router(theme: AppTheme.light, routerConfig: router);
+  return MaterialApp.router(
+    theme: AppTheme.light,
+    routerConfig: router,
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+  );
 }
 
 EpisodeListState _buildLoadedState({required int page}) {
