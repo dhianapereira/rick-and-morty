@@ -98,6 +98,9 @@ class _EpisodeDetailsPageState extends State<EpisodeDetailsPage> {
                         final Character character = details.characters[index];
 
                         return CharacterListItem(
+                          key: ValueKey<String>(
+                            'episode-character-item-${character.id}',
+                          ),
                           character: character,
                           onTap: () => context.push(
                             AppRouter.characterDetailsLocation(character.id),

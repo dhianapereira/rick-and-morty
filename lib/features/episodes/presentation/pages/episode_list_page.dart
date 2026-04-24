@@ -132,6 +132,7 @@ class _EpisodeListHeader extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.md),
             TextField(
+              key: const ValueKey<String>('episode-list-search-field'),
               controller: searchController,
               onChanged: onSearchChanged,
               textInputAction: TextInputAction.search,
@@ -255,6 +256,7 @@ class _EpisodeListItem extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Card(
+      key: ValueKey<String>('episode-list-item-${episode.id}'),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
         onTap: () => context.push(AppRouter.episodeDetailsLocation(episode.id)),
@@ -366,6 +368,7 @@ class _EpisodePaginationControls extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: OutlinedButton.icon(
+            key: const ValueKey<String>('episode-list-previous-button'),
             onPressed: state.hasPreviousPage && !state.isLoading
                 ? onPreviousPage
                 : null,
@@ -387,6 +390,7 @@ class _EpisodePaginationControls extends StatelessWidget {
         const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: FilledButton.icon(
+            key: const ValueKey<String>('episode-list-next-button'),
             onPressed: state.hasNextPage && !state.isLoading
                 ? onNextPage
                 : null,
