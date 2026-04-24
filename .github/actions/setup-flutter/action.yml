@@ -1,0 +1,22 @@
+name: Setup Flutter Environment
+description: Prepare Java, Flutter and project dependencies for CI jobs
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Java
+      uses: actions/setup-java@v5
+      with:
+        distribution: temurin
+        java-version: '17'
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: '3.41.6'
+        cache: true
+
+    - name: Install dependencies
+      shell: bash
+      run: flutter pub get
