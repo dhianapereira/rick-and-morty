@@ -46,6 +46,7 @@ void main() {
       when(() => controller.loadNextPage()).thenAnswer((_) async {});
       when(() => controller.loadPreviousPage()).thenAnswer((_) async {});
       when(() => controller.retry()).thenAnswer((_) async {});
+      when(() => controller.updateSearchQuery(any())).thenReturn(null);
 
       GetIt.I.registerSingleton<EpisodeListController>(controller);
     });

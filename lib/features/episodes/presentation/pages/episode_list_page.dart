@@ -17,6 +17,7 @@ class EpisodeListPage extends StatefulWidget {
 
 class _EpisodeListPageState extends State<EpisodeListPage> {
   final _controller = GetIt.I<EpisodeListController>();
+  final TextEditingController _searchTextController = TextEditingController();
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
 
   @override
   void dispose() {
+    _searchTextController.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -40,7 +42,15 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _EpisodeListHeader(state: state),
+              _EpisodeListHeader(
+                state: state,
+                searchController: _searchTextController,
+                onSearchChanged: _controller.updateSearchQuery,
+                onClearSearch: () {
+                  _searchTextController.clear();
+                  _controller.updateSearchQuery('');
+                },
+              ),
               const SizedBox(height: AppSpacing.lg),
               Expanded(
                 child: _EpisodeListContent(
@@ -63,9 +73,17 @@ class _EpisodeListPageState extends State<EpisodeListPage> {
 }
 
 class _EpisodeListHeader extends StatelessWidget {
-  const _EpisodeListHeader({required this.state});
+  const _EpisodeListHeader({
+    required this.state,
+    required this.searchController,
+    required this.onSearchChanged,
+    required this.onClearSearch,
+  });
 
   final EpisodeListState state;
+  final TextEditingController searchController;
+  final ValueChanged<String> onSearchChanged;
+  final VoidCallback onClearSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +117,9 @@ class _EpisodeListHeader extends StatelessWidget {
             Text(l10n.episodesTitle, style: theme.textTheme.headlineMedium),
             const SizedBox(height: AppSpacing.xs),
             Text(
-              state.hasContent
+              state.isSearchActive
+                  ? l10n.episodesSearchDescription(state.totalEpisodes)
+                  : state.hasContent
                   ? l10n.episodesRangeDescription(
                       state.startEpisodeNumber,
                       state.endEpisodeNumber,
@@ -108,6 +128,23 @@ class _EpisodeListHeader extends StatelessWidget {
                   : l10n.episodesInitialDescription,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            TextField(
+              controller: searchController,
+              onChanged: onSearchChanged,
+              textInputAction: TextInputAction.search,
+              decoration: InputDecoration(
+                hintText: l10n.episodesSearchHint,
+                prefixIcon: const Icon(Icons.search_rounded),
+                suffixIcon: state.isSearchActive
+                    ? IconButton(
+                        onPressed: onClearSearch,
+                        icon: const Icon(Icons.close_rounded),
+                        tooltip: l10n.clearSearchLabel,
+                      )
+                    : null,
               ),
             ),
             if (state.isLoading && state.hasContent) ...<Widget>[
@@ -142,6 +179,10 @@ class _EpisodeListContent extends StatelessWidget {
       return _EpisodeErrorState(message: state.errorMessage!, onRetry: onRetry);
     }
 
+    if (state.isEmptySearchResult) {
+      return const _EpisodeSearchEmptyState();
+    }
+
     return ListView.builder(
       key: const PageStorageKey<String>('episode-list'),
       itemCount: state.episodes.length,
@@ -155,6 +196,51 @@ class _EpisodeListContent extends StatelessWidget {
           child: _EpisodeListItem(episode: episode),
         );
       },
+    );
+  }
+}
+
+class _EpisodeSearchEmptyState extends StatelessWidget {
+  const _EpisodeSearchEmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final l10n = context.l10n;
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 420),
+        child: Card(
+          child: Padding(
+            padding: AppSpacing.cardPadding,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Icon(
+                  Icons.search_off_rounded,
+                  size: 40,
+                  color: AppColors.secondary,
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  l10n.episodesSearchEmptyTitle,
+                  style: theme.textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  l10n.episodesSearchEmptyDescription,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

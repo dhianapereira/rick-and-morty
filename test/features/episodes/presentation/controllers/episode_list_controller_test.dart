@@ -14,7 +14,10 @@ void main() {
 
   setUp(() {
     repository = _MockEpisodeRepository();
-    sut = EpisodeListController(repository: repository);
+    sut = EpisodeListController(
+      repository: repository,
+      searchDebounceDuration: const Duration(milliseconds: 1),
+    );
   });
 
   test(
@@ -60,6 +63,36 @@ void main() {
       expect(sut.value.hasError, isTrue);
       expect(sut.value.errorMessage, 'Unable to fetch episodes.');
       expect(sut.value.hasContent, isFalse);
+    },
+  );
+
+  test(
+    'Should search cached or remote episodes when search query changes',
+    () async {
+      when(() => repository.searchEpisodes(query: 'pilot', page: 1)).thenAnswer(
+        (_) async => EpisodePage(
+          currentPage: 1,
+          totalPages: 1,
+          totalEpisodes: 1,
+          episodes: const <Episode>[
+            Episode(
+              id: 1,
+              name: 'Pilot',
+              code: 'S01E01',
+              airDate: 'December 2, 2013',
+            ),
+          ],
+        ),
+      );
+
+      sut.updateSearchQuery('pilot');
+      await Future<void>.delayed(const Duration(milliseconds: 5));
+
+      expect(sut.value.searchQuery, 'pilot');
+      expect(sut.value.episodes.single.name, 'Pilot');
+      verify(
+        () => repository.searchEpisodes(query: 'pilot', page: 1),
+      ).called(1);
     },
   );
 }

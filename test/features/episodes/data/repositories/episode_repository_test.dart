@@ -111,6 +111,85 @@ void main() {
       expect(() => sut.fetchPage(4), throwsA(isA<EpisodeException>()));
     },
   );
+
+  test(
+    'Should return cached search results when matching episodes exist locally',
+    () async {
+      when(() => localDataSource.fetchAllPages()).thenAnswer(
+        (_) async => <EpisodePage>[
+          EpisodePage(
+            currentPage: 1,
+            totalPages: 2,
+            totalEpisodes: 20,
+            episodes: const <Episode>[
+              Episode(
+                id: 1,
+                name: 'Pilot',
+                code: 'S01E01',
+                airDate: 'December 2, 2013',
+              ),
+              Episode(
+                id: 2,
+                name: 'Lawnmower Dog',
+                code: 'S01E02',
+                airDate: 'December 9, 2013',
+              ),
+            ],
+          ),
+        ],
+      );
+
+      final EpisodePage result = await sut.searchEpisodes(
+        query: 'pilot',
+        page: 1,
+      );
+
+      expect(result.totalEpisodes, 1);
+      expect(result.episodes.single.name, 'Pilot');
+      verifyNever(
+        () => remoteDataSource.searchByName(
+          query: any(named: 'query'),
+          page: any(named: 'page'),
+        ),
+      );
+    },
+  );
+
+  test(
+    'Should fetch remote search results when cached pages do not match query',
+    () async {
+      when(
+        () => localDataSource.fetchAllPages(),
+      ).thenAnswer((_) async => <EpisodePage>[]);
+      when(
+        () => remoteDataSource.searchByName(query: 'rick', page: 1),
+      ).thenAnswer(
+        (_) async => EpisodeApiPageModel(
+          totalEpisodes: 1,
+          totalApiPages: 1,
+          episodes: const <Episode>[
+            Episode(
+              id: 8,
+              name: 'Rixty Minutes',
+              code: 'S01E08',
+              airDate: 'March 17, 2014',
+            ),
+          ],
+        ),
+      );
+
+      final EpisodePage result = await sut.searchEpisodes(
+        query: 'rick',
+        page: 1,
+      );
+
+      expect(result.totalEpisodes, 1);
+      expect(result.episodes.single.name, 'Rixty Minutes');
+      verify(
+        () => remoteDataSource.searchByName(query: 'rick', page: 1),
+      ).called(1);
+    },
+  );
 }
 
 EpisodeApiPageModel _buildApiPage({

@@ -41,6 +41,7 @@ void main() {
     when(() => controller.loadNextPage()).thenAnswer((_) async {});
     when(() => controller.loadPreviousPage()).thenAnswer((_) async {});
     when(() => controller.retry()).thenAnswer((_) async {});
+    when(() => controller.updateSearchQuery(any())).thenReturn(null);
 
     GetIt.I.registerSingleton<EpisodeListController>(controller);
   });
@@ -107,6 +108,20 @@ void main() {
     expect(find.text('Episode 1'), findsOneWidget);
     verify(() => controller.retry()).called(1);
   });
+
+  testWidgets('Should search episodes when search text changes', (
+    WidgetTester tester,
+  ) async {
+    stateNotifier.value = _buildLoadedState(page: 1);
+
+    await tester.pumpWidget(_buildTestApp());
+    await tester.pump();
+
+    await tester.enterText(find.byType(TextField), 'pilot');
+    await tester.pump();
+
+    verify(() => controller.updateSearchQuery('pilot')).called(1);
+  });
 }
 
 Widget _buildTestApp() {
@@ -115,7 +130,7 @@ Widget _buildTestApp() {
       GoRoute(
         path: '/',
         builder: (BuildContext context, GoRouterState state) =>
-            const EpisodeListPage(),
+            const Scaffold(body: EpisodeListPage()),
       ),
       GoRoute(
         path: '/episodes/:episodeId',

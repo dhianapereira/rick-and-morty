@@ -112,6 +112,24 @@ abstract class AppLocalizations {
   /// **'Explore the journey from the first episode to the latest release.'**
   String get episodesInitialDescription;
 
+  /// No description provided for @episodesSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by episode name or code'**
+  String get episodesSearchHint;
+
+  /// No description provided for @clearSearchLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get clearSearchLabel;
+
+  /// No description provided for @episodesSearchDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'{totalEpisodes} matches found'**
+  String episodesSearchDescription(int totalEpisodes);
+
   /// No description provided for @episodesRangeDescription.
   ///
   /// In en, this message translates to:
@@ -127,6 +145,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unable to load episodes'**
   String get unableToLoadEpisodesTitle;
+
+  /// No description provided for @episodesSearchEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No episodes found'**
+  String get episodesSearchEmptyTitle;
+
+  /// No description provided for @episodesSearchEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different episode name or code.'**
+  String get episodesSearchEmptyDescription;
 
   /// No description provided for @tryAgainLabel.
   ///
@@ -289,12 +319,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Status'**
   String get characterStatusLabel;
-
-  /// No description provided for @characterEpisodesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Episodes featured in'**
-  String get characterEpisodesTitle;
 }
 
 class _AppLocalizationsDelegate
