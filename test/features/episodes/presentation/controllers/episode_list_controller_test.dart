@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rickandmorty/features/episodes/domain/entities/episode.dart';
@@ -93,6 +95,76 @@ void main() {
       verify(
         () => repository.searchEpisodes(query: 'pilot', page: 1),
       ).called(1);
+    },
+  );
+
+  test(
+    'Should clear previous results immediately when search query changes',
+    () async {
+      when(
+        () => repository.fetchPage(1),
+      ).thenAnswer((_) async => _buildEpisodePage(page: 1));
+      when(() => repository.searchEpisodes(query: 'test', page: 1)).thenAnswer(
+        (_) async => const EpisodePage(
+          currentPage: 1,
+          totalPages: 1,
+          totalEpisodes: 0,
+          episodes: <Episode>[],
+        ),
+      );
+
+      await sut.loadInitialPage();
+      sut.updateSearchQuery('test');
+
+      expect(sut.value.searchQuery, 'test');
+      expect(sut.value.episodes, isEmpty);
+      expect(sut.value.totalEpisodes, 0);
+    },
+  );
+
+  test(
+    'Should ignore previous in flight search result when query changes',
+    () async {
+      final Completer<EpisodePage> oldSearchCompleter =
+          Completer<EpisodePage>();
+
+      when(
+        () => repository.searchEpisodes(query: 'd', page: 1),
+      ).thenAnswer((_) => oldSearchCompleter.future);
+      when(() => repository.searchEpisodes(query: 'test', page: 1)).thenAnswer(
+        (_) async => const EpisodePage(
+          currentPage: 1,
+          totalPages: 1,
+          totalEpisodes: 0,
+          episodes: <Episode>[],
+        ),
+      );
+
+      sut.updateSearchQuery('d');
+      await Future<void>.delayed(const Duration(milliseconds: 5));
+      sut.updateSearchQuery('test');
+
+      oldSearchCompleter.complete(
+        EpisodePage(
+          currentPage: 1,
+          totalPages: 1,
+          totalEpisodes: 1,
+          episodes: const <Episode>[
+            Episode(
+              id: 1,
+              name: 'Pilot',
+              code: 'S01E01',
+              airDate: 'December 2, 2013',
+            ),
+          ],
+        ),
+      );
+
+      await Future<void>.delayed(const Duration(milliseconds: 5));
+
+      expect(sut.value.searchQuery, 'test');
+      expect(sut.value.episodes, isEmpty);
+      expect(sut.value.errorMessage, isNull);
     },
   );
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:rickandmorty/features/episodes/domain/entities/episode.dart';
 import 'package:rickandmorty/features/episodes/domain/entities/episode_page.dart';
 import 'package:rickandmorty/features/episodes/domain/exceptions/episode_exception.dart';
 import 'package:rickandmorty/features/episodes/domain/repositories/episode_repository.dart';
@@ -58,7 +59,15 @@ class EpisodeListController extends ValueNotifier<EpisodeListState> {
     }
 
     _searchDebounce?.cancel();
-    value = value.copyWith(searchQuery: normalizedQuery, errorMessage: null);
+    _requestId++;
+    value = value.copyWith(
+      searchQuery: normalizedQuery,
+      episodes: const <Episode>[],
+      currentPage: 1,
+      totalPages: 1,
+      totalEpisodes: 0,
+      errorMessage: null,
+    );
     _searchDebounce = Timer(searchDebounceDuration, () {
       unawaited(_loadPage(1, query: normalizedQuery));
     });
