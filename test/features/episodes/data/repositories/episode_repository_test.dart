@@ -14,18 +14,20 @@ class _MockEpisodeRemoteDataSource extends Mock
 class _MockEpisodeLocalDataSource extends Mock
     implements EpisodeLocalDataSource {}
 
-class _FakeEpisodePage extends Fake implements EpisodePage {}
-
 void main() {
   late EpisodeLocalDataSource localDataSource;
   late EpisodeRemoteDataSource remoteDataSource;
   late RickAndMortyEpisodeRepository sut;
 
-  setUpAll(() {
-    registerFallbackValue(_FakeEpisodePage());
-  });
-
   setUp(() {
+    registerFallbackValue(
+      const EpisodePage(
+        episodes: <Episode>[],
+        currentPage: 1,
+        totalPages: 1,
+        totalEpisodes: 0,
+      ),
+    );
     localDataSource = _MockEpisodeLocalDataSource();
     remoteDataSource = _MockEpisodeRemoteDataSource();
     sut = RickAndMortyEpisodeRepository(

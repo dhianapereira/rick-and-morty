@@ -32,6 +32,10 @@
       }
     }
   },
+  "themeMenuTooltip": "Theme options",
+  "themeSystemLabel": "System",
+  "themeLightLabel": "Light",
+  "themeDarkLabel": "Dark",
   "episodeTitle": "Episode {episodeId}",
   "@episodeTitle": {
     "placeholders": {

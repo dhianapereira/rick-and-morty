@@ -71,19 +71,25 @@ class _EpisodeListHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final l10n = context.l10n;
+    final ColorScheme colorScheme = theme.colorScheme;
+    final bool isDark = theme.brightness == Brightness.dark;
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           colors: <Color>[
-            AppColors.surfaceContainerHigh,
-            AppColors.episodeSearchBackground,
+            isDark
+                ? AppColors.surfaceContainerHigh
+                : colorScheme.surfaceContainer,
+            isDark
+                ? AppColors.episodeSearchBackground
+                : colorScheme.surfaceContainerHighest,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-        border: Border.all(color: AppColors.outlineVariant),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Padding(
         padding: AppSpacing.cardPadding,
@@ -101,7 +107,7 @@ class _EpisodeListHeader extends StatelessWidget {
                     )
                   : l10n.episodesInitialDescription,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.onSurfaceVariant,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
             if (state.isLoading && state.hasContent) ...<Widget>[
@@ -190,7 +196,7 @@ class _EpisodeListItem extends StatelessWidget {
               Text(
                 episode.airDate,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.onSurfaceVariant,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
@@ -236,7 +242,7 @@ class _EpisodeErrorState extends StatelessWidget {
                 Text(
                   message,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.onSurfaceVariant,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -287,7 +293,7 @@ class _EpisodePaginationControls extends StatelessWidget {
             child: Text(
               l10n.pageIndicatorLabel(state.currentPage, state.totalPages),
               style: theme.textTheme.labelLarge?.copyWith(
-                color: AppColors.onSurfaceVariant,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
