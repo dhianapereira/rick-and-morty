@@ -8,6 +8,103 @@ class AppTheme {
 
   static final ThemeData light = ThemeData(
     useMaterial3: true,
+    brightness: Brightness.light,
+    colorScheme: ColorScheme.fromSeed(
+      brightness: Brightness.light,
+      seedColor: AppColors.primary,
+      primary: AppColors.primary,
+      secondary: AppColors.secondary,
+      tertiary: AppColors.tertiary,
+      surface: AppColors.lightBackground,
+      onSurface: AppColors.lightOnSurface,
+      onSurfaceVariant: AppColors.lightOnSurfaceVariant,
+      outline: AppColors.lightOutline,
+    ),
+    scaffoldBackgroundColor: AppColors.lightBackground,
+    canvasColor: AppColors.lightBackground,
+    splashFactory: InkRipple.splashFactory,
+    textTheme: AppTypography.textTheme
+        .apply(
+          bodyColor: AppColors.lightOnSurface,
+          displayColor: AppColors.lightOnSurface,
+        )
+        .copyWith(
+          bodySmall: AppTypography.textTheme.bodySmall?.copyWith(
+            color: AppColors.lightOnSurfaceVariant,
+          ),
+          labelLarge: AppTypography.textTheme.labelLarge?.copyWith(
+            color: AppColors.lightOnSurface,
+          ),
+          labelMedium: AppTypography.textTheme.labelMedium?.copyWith(
+            color: AppColors.lightOnSurface,
+          ),
+        ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.lightBackground,
+      foregroundColor: AppColors.lightOnSurface,
+      centerTitle: false,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      titleTextStyle: TextStyle(
+        fontFamily: AppTypography.displayFontFamily,
+        fontFamilyFallback: AppTypography.displayFontFallback,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: AppColors.lightOnSurface,
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: AppColors.lightSurfaceContainer,
+      contentPadding: AppSpacing.cardPadding,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        borderSide: const BorderSide(color: AppColors.lightOutline),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        borderSide: const BorderSide(color: AppColors.lightOutline),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+      ),
+      hintStyle: AppTypography.textTheme.bodyMedium?.copyWith(
+        color: AppColors.lightOnSurfaceVariant,
+      ),
+    ),
+    cardTheme: CardThemeData(
+      color: AppColors.lightSurface,
+      elevation: 1,
+      shadowColor: AppColors.shadow.withValues(alpha: 0.08),
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+      ),
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.lightSurfaceContainer,
+      disabledColor: AppColors.lightSurfaceContainerHigh,
+      selectedColor: AppColors.primaryContainer,
+      secondarySelectedColor: AppColors.secondaryContainer,
+      padding: AppSpacing.chipPadding,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
+      ),
+      labelStyle: AppTypography.textTheme.labelMedium!,
+      secondaryLabelStyle: AppTypography.textTheme.labelMedium!,
+      brightness: Brightness.light,
+      side: BorderSide.none,
+    ),
+    dividerTheme: const DividerThemeData(
+      color: AppColors.lightSurfaceContainerHigh,
+      thickness: 1,
+      space: AppSpacing.lg,
+    ),
+  );
+
+  static final ThemeData dark = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: AppColors.lightColorScheme,
     scaffoldBackgroundColor: AppColors.surface,

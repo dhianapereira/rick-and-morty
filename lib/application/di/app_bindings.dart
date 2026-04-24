@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:rickandmorty/application/config/app_environment.dart';
+import 'package:rickandmorty/application/theme/theme_controller.dart';
+import 'package:rickandmorty/application/theme/theme_local_data_source.dart';
 import 'package:rickandmorty/features/episodes/data/datasources/episode_local_data_source.dart';
 import 'package:rickandmorty/features/episodes/data/datasources/episode_remote_data_source.dart';
 import 'package:rickandmorty/features/episodes/data/repositories/rick_and_morty_episode_repository.dart';
@@ -10,6 +12,7 @@ import 'package:rickandmorty/features/episodes/domain/repositories/episode_repos
 import 'package:rickandmorty/features/episodes/presentation/controllers/episode_list_controller.dart';
 import 'package:rickandmorty/shared/http/client_http.dart';
 import 'package:sembast/sembast_io.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppBindings {
   const AppBindings._();
@@ -27,11 +30,18 @@ class AppBindings {
     }
 
     final Database database = await _openDatabase();
+    final SharedPreferencesAsync sharedPreferences = SharedPreferencesAsync();
 
     GetIt.I.registerSingleton<Database>(database);
+    GetIt.I.registerSingleton<SharedPreferencesAsync>(sharedPreferences);
     GetIt.I.registerLazySingleton<ClientHttp>(
       () =>
           ClientHttp(options: BaseOptions(baseUrl: AppEnvironment.apiBaseUrl)),
+    );
+    GetIt.I.registerLazySingleton<ThemeLocalDataSource>(
+      () => SharedPreferencesThemeLocalDataSource(
+        preferences: GetIt.I<SharedPreferencesAsync>(),
+      ),
     );
     GetIt.I.registerLazySingleton<EpisodeLocalDataSource>(
       () => SembastEpisodeLocalDataSource(database: GetIt.I<Database>()),
@@ -50,6 +60,10 @@ class AppBindings {
     GetIt.I.registerFactory<EpisodeListController>(
       () => EpisodeListController(repository: GetIt.I<EpisodeRepository>()),
     );
+    GetIt.I.registerSingleton<ThemeController>(
+      ThemeController(localDataSource: GetIt.I<ThemeLocalDataSource>()),
+    );
+    await GetIt.I<ThemeController>().loadThemePreference();
   }
 
   static Future<Database> _openDatabase() async {

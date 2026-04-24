@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rickandmorty/application/router/app_router.dart';
+import 'package:rickandmorty/application/theme/app_theme_preference.dart';
+import 'package:rickandmorty/application/theme/theme_controller.dart';
 import 'package:rickandmorty/features/episodes/domain/entities/episode.dart';
 import 'package:rickandmorty/features/episodes/presentation/controllers/episode_list_controller.dart';
 import 'package:rickandmorty/features/episodes/presentation/controllers/episode_list_state.dart';
@@ -13,12 +15,17 @@ import 'package:rickandmorty/shared/shared.dart';
 class _MockEpisodeListController extends Mock
     implements EpisodeListController {}
 
+class _MockThemeController extends Mock implements ThemeController {}
+
 void main() {
   late EpisodeListController controller;
   late ValueNotifier<EpisodeListState> stateNotifier;
+  late ThemeController themeController;
+  late ValueNotifier<AppThemePreference> themeNotifier;
 
   setUp(() {
     controller = _MockEpisodeListController();
+    themeController = _MockThemeController();
     stateNotifier = ValueNotifier<EpisodeListState>(
       EpisodeListState(
         episodes: const <Episode>[
@@ -31,6 +38,9 @@ void main() {
         ],
         totalEpisodes: 1,
       ),
+    );
+    themeNotifier = ValueNotifier<AppThemePreference>(
+      AppThemePreference.system,
     );
 
     when(() => controller.value).thenAnswer((_) => stateNotifier.value);
@@ -50,12 +60,38 @@ void main() {
     });
     when(() => controller.loadInitialPage()).thenAnswer((_) async {});
     when(() => controller.dispose()).thenAnswer((_) {});
+    when(() => themeController.value).thenAnswer((_) => themeNotifier.value);
+    when(() => themeController.addListener(any())).thenAnswer((
+      Invocation invocation,
+    ) {
+      themeNotifier.addListener(
+        invocation.positionalArguments.first as VoidCallback,
+      );
+    });
+    when(() => themeController.removeListener(any())).thenAnswer((
+      Invocation invocation,
+    ) {
+      themeNotifier.removeListener(
+        invocation.positionalArguments.first as VoidCallback,
+      );
+    });
+    when(
+      () => themeController.updateThemePreference(AppThemePreference.system),
+    ).thenAnswer((_) async {});
+    when(
+      () => themeController.updateThemePreference(AppThemePreference.light),
+    ).thenAnswer((_) async {});
+    when(
+      () => themeController.updateThemePreference(AppThemePreference.dark),
+    ).thenAnswer((_) async {});
 
     GetIt.I.registerSingleton<EpisodeListController>(controller);
+    GetIt.I.registerSingleton<ThemeController>(themeController);
   });
 
   tearDown(() async {
     stateNotifier.dispose();
+    themeNotifier.dispose();
     await GetIt.I.reset();
   });
 

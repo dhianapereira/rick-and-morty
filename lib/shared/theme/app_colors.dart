@@ -43,6 +43,13 @@ class AppColors {
   static const Color statusAlive = Color(0xFF72E08A);
   static const Color statusUnknown = Color(0xFFFFD166);
   static const Color statusDead = Color(0xFFFF7B72);
+  static const Color lightBackground = Color(0xFFF7FBFC);
+  static const Color lightSurface = Color(0xFFFFFFFF);
+  static const Color lightSurfaceContainer = Color(0xFFEAF2F4);
+  static const Color lightSurfaceContainerHigh = Color(0xFFDDE8EB);
+  static const Color lightOnSurface = Color(0xFF13202F);
+  static const Color lightOnSurfaceVariant = Color(0xFF445A68);
+  static const Color lightOutline = Color(0xFF8EA3AF);
 
   static const ColorScheme lightColorScheme = ColorScheme(
     brightness: Brightness.dark,

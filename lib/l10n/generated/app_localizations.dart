@@ -152,6 +152,30 @@ abstract class AppLocalizations {
   /// **'Page {currentPage} of {totalPages}'**
   String pageIndicatorLabel(int currentPage, int totalPages);
 
+  /// No description provided for @themeMenuTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme options'**
+  String get themeMenuTooltip;
+
+  /// No description provided for @themeSystemLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystemLabel;
+
+  /// No description provided for @themeLightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLightLabel;
+
+  /// No description provided for @themeDarkLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDarkLabel;
+
   /// No description provided for @episodeTitle.
   ///
   /// In en, this message translates to:

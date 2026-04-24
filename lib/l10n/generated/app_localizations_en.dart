@@ -45,6 +45,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get themeMenuTooltip => 'Theme options';
+
+  @override
+  String get themeSystemLabel => 'System';
+
+  @override
+  String get themeLightLabel => 'Light';
+
+  @override
+  String get themeDarkLabel => 'Dark';
+
+  @override
   String episodeTitle(int episodeId) {
     return 'Episode $episodeId';
   }

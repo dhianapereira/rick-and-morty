@@ -5,5 +5,5 @@ import 'package:rickandmorty/application/app_widget.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppBindings.setup();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
