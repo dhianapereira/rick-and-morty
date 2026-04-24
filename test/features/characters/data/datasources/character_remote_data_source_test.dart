@@ -20,6 +20,48 @@ void main() {
   });
 
   test(
+    'Should return character model when single character request succeeds',
+    () async {
+      when(
+        () => clientHttp.send<Map<String, dynamic>>(
+          any(),
+          decoder: any(named: 'decoder'),
+        ),
+      ).thenAnswer(
+        (_) async => HttpSuccess<Map<String, dynamic>>(
+          data: <String, dynamic>{
+            'id': 1,
+            'name': 'Rick Sanchez',
+            'status': 'Alive',
+            'species': 'Human',
+            'type': '',
+            'gender': 'Male',
+            'origin': <String, dynamic>{
+              'name': 'Earth (C-137)',
+              'url': 'https://rickandmortyapi.com/api/location/1',
+            },
+            'location': <String, dynamic>{
+              'name': 'Citadel of Ricks',
+              'url': 'https://rickandmortyapi.com/api/location/3',
+            },
+            'image': 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+            'episode': <String>['https://rickandmortyapi.com/api/episode/1'],
+            'url': 'https://rickandmortyapi.com/api/character/1',
+            'created': '2017-11-04T18:48:46.250Z',
+          },
+          statusCode: 200,
+        ),
+      );
+
+      final result = await sut.fetchById(1);
+
+      expect(result.id, 1);
+      expect(result.name, 'Rick Sanchez');
+      expect(result.episodeUrls.length, 1);
+    },
+  );
+
+  test(
     'Should return character models when character batch request succeeds',
     () async {
       when(

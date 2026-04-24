@@ -241,6 +241,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Character details will be added soon.'**
   String get characterDetailsPlaceholder;
+
+  /// No description provided for @unableToLoadCharacterDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load character details'**
+  String get unableToLoadCharacterDetailsTitle;
+
+  /// No description provided for @characterPlacesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Places'**
+  String get characterPlacesTitle;
+
+  /// No description provided for @characterOriginLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Origin'**
+  String get characterOriginLabel;
+
+  /// No description provided for @characterLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last known location'**
+  String get characterLocationLabel;
+
+  /// No description provided for @characterGenderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get characterGenderLabel;
+
+  /// No description provided for @characterEpisodesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Episodes'**
+  String get characterEpisodesLabel;
+
+  /// No description provided for @characterCreatedAtLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get characterCreatedAtLabel;
+
+  /// No description provided for @characterStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get characterStatusLabel;
+
+  /// No description provided for @characterEpisodesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Episodes featured in'**
+  String get characterEpisodesTitle;
 }
 
 class _AppLocalizationsDelegate

@@ -6,6 +6,9 @@ import 'package:rickandmorty/application/config/app_environment.dart';
 import 'package:rickandmorty/application/theme/theme_controller.dart';
 import 'package:rickandmorty/application/theme/theme_local_data_source.dart';
 import 'package:rickandmorty/features/characters/data/datasources/character_remote_data_source.dart';
+import 'package:rickandmorty/features/characters/data/repositories/character_details_repository_impl.dart';
+import 'package:rickandmorty/features/characters/domain/repositories/character_details_repository.dart';
+import 'package:rickandmorty/features/characters/presentation/controllers/character_details_controller.dart';
 import 'package:rickandmorty/features/episodes/data/datasources/episode_details_remote_data_source.dart';
 import 'package:rickandmorty/features/episodes/data/datasources/episode_local_data_source.dart';
 import 'package:rickandmorty/features/episodes/data/datasources/episode_remote_data_source.dart';
@@ -63,6 +66,11 @@ class AppBindings {
     GetIt.I.registerLazySingleton<CharacterRemoteDataSource>(
       () => ApiCharacterRemoteDataSource(clientHttp: GetIt.I<ClientHttp>()),
     );
+    GetIt.I.registerLazySingleton<CharacterDetailsRepository>(
+      () => CharacterDetailsRepositoryImpl(
+        remoteDataSource: GetIt.I<CharacterRemoteDataSource>(),
+      ),
+    );
     GetIt.I.registerLazySingleton<EpisodeRepository>(
       () => RickAndMortyEpisodeRepository(
         localDataSource: GetIt.I<EpisodeLocalDataSource>(),
@@ -82,6 +90,12 @@ class AppBindings {
       (int episodeId, _) => EpisodeDetailsController(
         repository: GetIt.I<EpisodeDetailsRepository>(),
         episodeId: episodeId,
+      ),
+    );
+    GetIt.I.registerFactoryParam<CharacterDetailsController, int, void>(
+      (int characterId, _) => CharacterDetailsController(
+        repository: GetIt.I<CharacterDetailsRepository>(),
+        characterId: characterId,
       ),
     );
     GetIt.I.registerSingleton<ThemeController>(

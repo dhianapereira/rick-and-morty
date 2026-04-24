@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rickandmorty/features/characters/data/datasources/character_remote_data_source.dart';
 import 'package:rickandmorty/features/characters/data/models/character_api_model.dart';
+import 'package:rickandmorty/features/characters/data/models/character_place_api_model.dart';
 import 'package:rickandmorty/features/episodes/data/datasources/episode_details_remote_data_source.dart';
 import 'package:rickandmorty/features/episodes/data/models/episode_api_details_model.dart';
 import 'package:rickandmorty/features/episodes/data/repositories/rick_and_morty_episode_details_repository.dart';
@@ -45,20 +46,34 @@ void main() {
       when(
         () => characterRemoteDataSource.fetchByIds(const <int>[1, 2]),
       ).thenAnswer(
-        (_) async => const <CharacterApiModel>[
+        (_) async => <CharacterApiModel>[
           CharacterApiModel(
             id: 1,
             name: 'Rick Sanchez',
             status: 'Alive',
             species: 'Human',
+            type: '',
+            gender: 'Male',
+            origin: CharacterPlaceApiModel(name: 'Earth', url: ''),
+            location: CharacterPlaceApiModel(name: 'Earth', url: ''),
             imageUrl: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+            episodeUrls: <String>['https://rickandmortyapi.com/api/episode/1'],
+            url: 'https://rickandmortyapi.com/api/character/1',
+            createdAt: DateTime.utc(2017, 11, 4),
           ),
           CharacterApiModel(
             id: 2,
             name: 'Morty Smith',
             status: 'Alive',
             species: 'Human',
+            type: '',
+            gender: 'Male',
+            origin: CharacterPlaceApiModel(name: 'Earth', url: ''),
+            location: CharacterPlaceApiModel(name: 'Earth', url: ''),
             imageUrl: 'https://rickandmortyapi.com/api/character/avatar/2.jpeg',
+            episodeUrls: <String>['https://rickandmortyapi.com/api/episode/1'],
+            url: 'https://rickandmortyapi.com/api/character/2',
+            createdAt: DateTime.utc(2017, 11, 4),
           ),
         ],
       );
