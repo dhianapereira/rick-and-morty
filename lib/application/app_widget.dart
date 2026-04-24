@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rickandmorty/presentation/home_page.dart';
+import 'package:rickandmorty/application/router/app_router.dart';
 import 'package:rickandmorty/shared/shared.dart';
 
 class MyApp extends StatelessWidget {
@@ -7,11 +7,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Rick and Morty',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      home: const MyHomePage(),
+      routerConfig: AppRouter.router,
     );
   }
 }
