@@ -11,6 +11,7 @@ Por isso, a execução local está preparada apenas para Android. Não houve con
 ## Funcionalidades Atuais
 
 - Lista paginada de episódios, carregando 10 episódios por vez
+- Busca de episódios por nome ou código, com prioridade para dados em cache
 - Detalhes de episódio com lista de personagens clicável
 - Detalhes de personagem
 - Troca de tema `system`, `light` e `dark`
@@ -25,6 +26,7 @@ Por isso, a execução local está preparada apenas para Android. Não houve con
 - `shared_preferences`
 - `alchemist`
 - `very_good_cli`
+- `integration_test`
 
 ### Estrutura
 
@@ -42,6 +44,7 @@ lib/
 - `sembast` foi escolhido como banco NoSQL local para cache, evitando carregar dados já obtidos da API.
 - Strings não ficam chumbadas na UI; o projeto já está preparado com `l10n`, mesmo tendo suporte apenas para `en` neste momento.
 - A inicialização global foi mantida enxuta. Apenas dependências essenciais sobem no startup; dependências de feature são registradas sob demanda por rota para reduzir custo antes da primeira renderização.
+- A busca de episódios prioriza páginas já armazenadas localmente antes de consultar a API, reduzindo requisições desnecessárias e melhorando a resposta percebida.
 
 ## Testes
 
@@ -50,6 +53,7 @@ O projeto possui:
 - testes unitários
 - testes de widget
 - golden tests com `alchemist`
+- teste de integração para o fluxo principal do app
 
 Os testes seguem o padrão de nomenclatura:
 
@@ -63,6 +67,7 @@ A estratégia atual prioriza:
 - validação de repository e cache
 - validação de interações de UI, como taps em botões e navegação
 - validação visual das páginas principais com golden tests
+- validação ponta a ponta do fluxo principal com `integration_test`
 
 ## Como Rodar
 
@@ -104,6 +109,14 @@ very_good test --test-randomize-ordering-seed random
 
 ```bash
 very_good test --update-goldens
+```
+
+### 6. Rodar teste de integração
+
+```bash
+flutter test integration_test/app_flow_test.dart \
+  --dart-define-from-file=env/development.json \
+  -d <device-id>
 ```
 
 ## Variáveis de Ambiente

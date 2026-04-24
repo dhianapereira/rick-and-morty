@@ -17,6 +17,7 @@ class CharacterListItem extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Card(
+      key: key,
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
