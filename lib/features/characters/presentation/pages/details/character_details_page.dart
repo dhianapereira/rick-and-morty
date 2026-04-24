@@ -81,8 +81,6 @@ class _CharacterDetailsContent extends StatelessWidget {
               _CharacterQuickFacts(details: details),
               const SizedBox(height: AppSpacing.lg),
               _CharacterPlacesSection(details: details),
-              const SizedBox(height: AppSpacing.lg),
-              _CharacterEpisodesSection(details: details),
             ],
           ),
         ),
@@ -230,43 +228,6 @@ class _CharacterPlacesSection extends StatelessWidget {
   }
 }
 
-class _CharacterEpisodesSection extends StatelessWidget {
-  const _CharacterEpisodesSection({required this.details});
-
-  final CharacterDetails details;
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          context.l10n.characterEpisodesTitle,
-          style: theme.textTheme.headlineMedium,
-        ),
-        const SizedBox(height: AppSpacing.md),
-        Wrap(
-          spacing: AppSpacing.xs,
-          runSpacing: AppSpacing.xs,
-          children: details.episodeUrls
-              .map(_extractEpisodeId)
-              .map(
-                (int episodeId) =>
-                    Chip(label: Text(context.l10n.episodeTitle(episodeId))),
-              )
-              .toList(growable: false),
-        ),
-      ],
-    );
-  }
-
-  int _extractEpisodeId(String episodeUrl) {
-    return int.parse(Uri.parse(episodeUrl).pathSegments.last);
-  }
-}
-
 class _CharacterInfoCard extends StatelessWidget {
   const _CharacterInfoCard({required this.label, required this.value});
 
@@ -339,15 +300,6 @@ class _CharacterPlaceCard extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(place.name, style: theme.textTheme.titleMedium),
-                  if (place.hasDetails) ...<Widget>[
-                    const SizedBox(height: AppSpacing.xxs),
-                    Text(
-                      place.url,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
                 ],
               ),
             ),

@@ -3,6 +3,4 @@ class CharacterPlace {
 
   final String name;
   final String url;
-
-  bool get hasDetails => url.isNotEmpty;
 }

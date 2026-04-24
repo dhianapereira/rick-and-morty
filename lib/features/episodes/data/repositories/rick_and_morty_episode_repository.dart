@@ -8,8 +8,8 @@ import 'package:rickandmorty/features/episodes/domain/entities/episode_page.dart
 import 'package:rickandmorty/features/episodes/domain/exceptions/episode_exception.dart';
 import 'package:rickandmorty/features/episodes/domain/repositories/episode_repository.dart';
 
-class RickAndMortyEpisodeRepository implements EpisodeRepository {
-  RickAndMortyEpisodeRepository({
+class EpisodeRepositoryImpl implements EpisodeRepository {
+  EpisodeRepositoryImpl({
     required EpisodeLocalDataSource localDataSource,
     required EpisodeRemoteDataSource remoteDataSource,
     this.pageSize = 10,

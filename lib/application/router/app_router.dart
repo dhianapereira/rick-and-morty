@@ -1,13 +1,18 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rickandmorty/application/di/app_bindings.dart';
 import 'package:rickandmorty/application/router/app_route_location.dart';
 import 'package:rickandmorty/application/router/app_route_names.dart';
 import 'package:rickandmorty/application/router/app_route_parameters.dart';
 import 'package:rickandmorty/application/router/app_route_paths.dart';
+import 'package:rickandmorty/application/router/route_loader_page.dart';
+import 'package:rickandmorty/features/characters/characters_feature.dart';
 import 'package:rickandmorty/features/characters/presentation/pages/details/character_details_page.dart';
+import 'package:rickandmorty/features/episodes/episodes_feature.dart';
 import 'package:rickandmorty/features/episodes/presentation/pages/details/episode_details_page.dart';
 import 'package:rickandmorty/features/episodes/presentation/pages/episode_list_page.dart';
 import 'package:rickandmorty/features/home/presentation/pages/home_page.dart';
+import 'package:rickandmorty/l10n/l10n_extension.dart';
 
 class AppRouter {
   const AppRouter._();
@@ -33,7 +38,12 @@ class AppRouter {
               path: AppRoutePaths.episodes,
               name: AppRouteNames.episodes,
               builder: (BuildContext context, GoRouterState state) =>
-                  const EpisodeListPage(),
+                  RouteLoaderPage(
+                    onLoad: () =>
+                        AppBindings.initializeFeature(EpisodesFeature.key),
+                    errorTitle: context.l10n.unableToLoadEpisodesTitle,
+                    builder: (_) => const EpisodeListPage(),
+                  ),
             ),
           ],
         ),
@@ -44,7 +54,12 @@ class AppRouter {
             final String episodeId =
                 state.pathParameters[AppRouteParameters.episodeId]!;
 
-            return EpisodeDetailsPage(episodeId: int.parse(episodeId));
+            return RouteLoaderPage(
+              onLoad: () => AppBindings.initializeFeature(EpisodesFeature.key),
+              errorTitle: context.l10n.unableToLoadEpisodeDetailsTitle,
+              builder: (_) =>
+                  EpisodeDetailsPage(episodeId: int.parse(episodeId)),
+            );
           },
         ),
         GoRoute(
@@ -54,7 +69,13 @@ class AppRouter {
             final String characterId =
                 state.pathParameters[AppRouteParameters.characterId]!;
 
-            return CharacterDetailsPage(characterId: int.parse(characterId));
+            return RouteLoaderPage(
+              onLoad: () =>
+                  AppBindings.initializeFeature(CharactersFeature.key),
+              errorTitle: context.l10n.unableToLoadCharacterDetailsTitle,
+              builder: (_) =>
+                  CharacterDetailsPage(characterId: int.parse(characterId)),
+            );
           },
         ),
       ],

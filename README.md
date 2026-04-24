@@ -1,6 +1,6 @@
 # Rick and Morty
 
-O foco deste projeto é demonstrar organização arquitetural, preocupação com performance, testes automatizados, navegação escalável, cache local e boas práticas de UI.
+O foco deste projeto é demonstrar organização arquitetural, performance, testes automatizados, navegação escalável, cache local e boas práticas de UI em um catálogo que consome a API do Rick and Morty.
 
 ## Observação Importante
 
@@ -11,6 +11,8 @@ Por isso, a execução local está preparada apenas para Android. Não houve con
 ## Funcionalidades Atuais
 
 - Lista paginada de episódios, carregando 10 episódios por vez
+- Detalhes de episódio com lista de personagens clicável
+- Detalhes de personagem
 - Troca de tema `system`, `light` e `dark`
 
 ## Stack
@@ -21,6 +23,8 @@ Por isso, a execução local está preparada apenas para Android. Não houve con
 - `get_it`
 - `sembast`
 - `shared_preferences`
+- `alchemist`
+- `very_good_cli`
 
 ### Estrutura
 
@@ -37,6 +41,7 @@ lib/
 - `ValueNotifier` foi utilizado para gerenciamento de estado por ser suficiente para a complexidade atual, leve e com baixo custo de rebuild.
 - `sembast` foi escolhido como banco NoSQL local para cache, evitando carregar dados já obtidos da API.
 - Strings não ficam chumbadas na UI; o projeto já está preparado com `l10n`, mesmo tendo suporte apenas para `en` neste momento.
+- A inicialização global foi mantida enxuta. Apenas dependências essenciais sobem no startup; dependências de feature são registradas sob demanda por rota para reduzir custo antes da primeira renderização.
 
 ## Testes
 
@@ -44,6 +49,7 @@ O projeto possui:
 
 - testes unitários
 - testes de widget
+- golden tests com `alchemist`
 
 Os testes seguem o padrão de nomenclatura:
 
@@ -56,6 +62,7 @@ A estratégia atual prioriza:
 - validação de regras da controller
 - validação de repository e cache
 - validação de interações de UI, como taps em botões e navegação
+- validação visual das páginas principais com golden tests
 
 ## Como Rodar
 
@@ -86,7 +93,17 @@ flutter analyze
 ### 4. Rodar testes
 
 ```bash
-flutter test
+dart pub global activate very_good_cli 1.1.1
+```
+
+```bash
+very_good test --test-randomize-ordering-seed random
+```
+
+### 5. Atualizar goldens
+
+```bash
+very_good test --update-goldens
 ```
 
 ## Variáveis de Ambiente

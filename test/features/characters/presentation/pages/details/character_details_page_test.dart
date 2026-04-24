@@ -62,6 +62,7 @@ void main() {
     expect(find.text('Male'), findsOneWidget);
     expect(find.text('Earth (C-137)'), findsOneWidget);
     expect(find.text('Places'), findsOneWidget);
+    expect(find.text('Episode 1'), findsNothing);
     verify(() => controller.load()).called(1);
   });
 

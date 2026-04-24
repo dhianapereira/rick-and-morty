@@ -17,7 +17,7 @@ class _MockEpisodeLocalDataSource extends Mock
 void main() {
   late EpisodeLocalDataSource localDataSource;
   late EpisodeRemoteDataSource remoteDataSource;
-  late RickAndMortyEpisodeRepository sut;
+  late EpisodeRepositoryImpl sut;
 
   setUp(() {
     registerFallbackValue(
@@ -30,7 +30,7 @@ void main() {
     );
     localDataSource = _MockEpisodeLocalDataSource();
     remoteDataSource = _MockEpisodeRemoteDataSource();
-    sut = RickAndMortyEpisodeRepository(
+    sut = EpisodeRepositoryImpl(
       localDataSource: localDataSource,
       remoteDataSource: remoteDataSource,
     );
