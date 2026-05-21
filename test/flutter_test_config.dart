@@ -26,7 +26,7 @@ Set<HostPlatform> get _platforms {
     return <HostPlatform>{};
   }
 
-  return <HostPlatform>{HostPlatform.linux};
+  return <HostPlatform>{HostPlatform.linux, HostPlatform.macOS};
 }
 
 bool get _isRunningOnGitHubActions {
