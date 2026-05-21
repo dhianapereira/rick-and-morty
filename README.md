@@ -2,12 +2,6 @@
 
 O foco deste projeto é demonstrar organização arquitetural, performance, testes automatizados, navegação escalável, cache local e boas práticas de UI em um catálogo que consome a API do Rick and Morty.
 
-## Observação Importante
-
-No momento, o projeto foi desenvolvido e validado em um PC Linux.
-
-Por isso, a execução local está preparada apenas para Android. Não houve configuração nem validação para iOS.
-
 ## Funcionalidades Atuais
 
 - Lista paginada de episódios, carregando 10 episódios por vez
